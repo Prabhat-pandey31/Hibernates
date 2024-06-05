@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.cdac.prabhat.Schooldb.Teacher" table="TEACHER">
+        <!-- Primary key mapping -->
+        <id name="id" column="ID">
+            <generator class="assigned"/>
+        </id>
+
+        <!-- Property mappings -->
+        <property name="name" column="NAME" type="string"/>
+        <property name="dept" column="DEPT" type="string"/>
+        <property name="subject" column="SUBJECT" type="string"/>
+        <property name="salary" column="SALARY" type="float"/>
+    </class>
+</hibernate-mapping>

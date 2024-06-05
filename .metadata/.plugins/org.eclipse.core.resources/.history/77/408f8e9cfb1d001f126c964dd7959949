@@ -1,0 +1,50 @@
+package com.cdac.prabhat.hiberdemo1;
+
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+
+/**
+ * Hibernate Application to Save and Fetch Employee Object
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        // Configure Hibernate
+        Configuration cfg = new Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        
+        // Create SessionFactory
+        SessionFactory sf = cfg.buildSessionFactory(); 
+        
+        // Open session
+        Session session = sf.openSession();
+        
+        // Transaction to fetch an employee object
+        int employeeId = 104; // example ID
+        Employee fetchedEmployee = fetchEmployeeById(session, employeeId);
+        if(fetchedEmployee != null) {
+            System.out.println("Fetched Employee: " + fetchedEmployee.getFname() + " " + fetchedEmployee.getLname());
+        } else {
+            System.out.println("Employee not found with ID: " + employeeId);
+        } 
+        
+        // Close session and SessionFactory
+        session.close();
+        sf.close();
+    }
+
+    private static Employee fetchEmployeeById(Session session, int id) {
+        Transaction t = null;
+        Employee employee = null;
+        try {
+            t = session.beginTransaction();
+            employee = session.get(Employee.class, id);
+            t.commit();
+        } catch (HibernateException e) {
+            if (t != null) t.rollback();
+            e.printStackTrace();
+        }
+        return employee;
+    }
+}

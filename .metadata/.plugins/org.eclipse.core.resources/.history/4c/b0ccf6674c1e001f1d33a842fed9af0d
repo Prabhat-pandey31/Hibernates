@@ -1,0 +1,36 @@
+package com.cdac.prabhat.Schooldb;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        Configuration gfg = new Configuration();
+        gfg.configure("hibernate.cfg.xml");
+       
+        SessionFactory sf = gfg.buildSessionFactory();
+        Session session =sf.openSession();
+        Transaction t = session.beginTransaction();
+        
+        Teacher e = new  Teacher (1,"prabhatpandey", "Technical" ," java",50000);
+        Teacher e2 = new  Teacher (2,"prajwal", "civil" ," bajri",50000);
+        Teacher e3 = new  Teacher (3,"mradul", "Mechinal" ," motor",50000);
+        Teacher e4 = new  Teacher (4,"puneet", "Technical" ," Dsa",50000);
+        Teacher e5 = new  Teacher (5,"aman", "Technical" ," java",50000);
+        System.out.println("data saved successfully");
+        
+        t.commit();
+        session.close();
+        sf.close();
+        
+    }
+}

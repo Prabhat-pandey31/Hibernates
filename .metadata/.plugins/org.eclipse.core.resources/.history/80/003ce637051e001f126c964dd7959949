@@ -1,0 +1,65 @@
+package com.cdac.prabhat.hiberdemo1;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+
+import java.util.List;
+
+/**
+ * Hibernate Application to Save and Retrieve Employee Objects
+ */
+public class App {
+    public static void main(String[] args) {
+        // It is used to configure Hibernate
+        Configuration cfg = new Configuration();
+        cfg.configure("hibernate.cfg.xml");
+
+        // It is a factory of sessions
+        SessionFactory sf = cfg.buildSessionFactory();
+
+        // Create a physical connection with the database
+        Session session = sf.openSession();
+        
+        Transaction t = session.beginTransaction(); // Unit of work... db transactions
+        
+        Employee e1 = new Employee(); // Persistent Object
+        e1.setId(106);
+        e1.setFname("virat");
+        e1.setLname("kholi");
+        e1.setDept("sports");
+        e1.setSalary(500000.00f);
+        
+        session.save(e1); // Inserts object to DB
+        t.commit();
+        
+        System.out.println("Data Successfully Saved to Database");
+        
+        Employee e = session.get(Employee.class, 101);
+        System.out.println("details :" + e);
+        
+
+        session.close(); // Close the session after saving
+
+        // Open a new session to fetch data
+        Session newSession = sf.openSession();
+        Transaction newTransaction = newSession.beginTransaction();
+
+        Query<Employee> qry = newSession.createQuery("from Employee", Employee.class); // HQL Select Query
+        List<Employee> lst = qry.list(); // Returns result of Relation(table) as List
+        
+        System.out.println("List of Employees:");
+        for (Employee emp : lst) {
+            System.out.println(emp.getId() + "\t" + emp.getFname() + "\t" + emp.getLname() + "\t" + emp.getDept() + "\t" + emp.getSalary());
+        }
+
+        newTransaction.commit();
+        
+        newSession.close();
+        sf.close();
+    }
+}
+
+
